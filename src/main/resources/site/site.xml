@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <display-name>Menu App</display-name>
+  <form/>
+  <x-data name="menu-item"/>
+</site>
