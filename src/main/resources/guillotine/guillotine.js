@@ -29,6 +29,12 @@ exports.extensions = function (graphQL) {
                     name: {
                         type: graphQL.GraphQLString,
                     },
+                    url: {
+                        type: graphQL.GraphQLString,
+                        args: {
+                            type: graphQL.reference('UrlType'),
+                        }
+                    },
                     type: {
                         type: graphQL.GraphQLString,
                     },
@@ -65,6 +71,7 @@ exports.extensions = function (graphQL) {
             MenuItem: {
                 content: resolverLib.MenuItem_content_Resolver,
                 children: resolverLib.MenuItem_getChildren_Resolver,
+                url: resolverLib.MenuItem_url_Resolver,
             },
         },
     }

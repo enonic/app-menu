@@ -1,6 +1,7 @@
 const menuLib = require('./menu');
 const ctxLib = require('/lib/ctx');
 const contentLib = require('/lib/xp/content');
+const portalLib = require('/lib/xp/portal');
 
 exports.HeadlessCms_menu_Resolver = function (graphQL) {
     return function (env) {
@@ -27,19 +28,17 @@ exports.MenuItem_getChildren_Resolver = function (env) {
     return menuLib.getChildrenMenuItems(env, env.source.path);
 };
 
+exports.MenuItem_url_Resolver = function (env) {
+    return portalLib.pageUrl({
+        id: env.source.id,
+        type: env.args.type,
+    });
+};
+
 exports.MenuItem_content_Resolver = function (env) {
     return ctxLib.executeInContext(env, function () {
-        const content = contentLib.get({
+        return contentLib.get({
             key: env.source.id,
         });
-
-        const ctx = ctxLib.get();
-
-        const copy = JSON.parse(JSON.stringify(content));
-
-        copy._branch = ctx.branch;
-        copy._project = ctx.repository.replace('com.enonic.cms.', '');
-
-        return copy;
     });
 };
