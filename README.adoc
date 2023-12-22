@@ -26,6 +26,9 @@ If the Guillotine application is installed on your XP instance, then after insta
 |type: String
 |Type of the content.
 
+|url(type: https://developer.enonic.com/docs/guillotine/stable/api#urltype[UrlType]): String
+|Url of the content.
+
 |content: https://developer.enonic.com/docs/guillotine/stable/api#content[Content]
 |Relevant content.
 
@@ -53,6 +56,7 @@ fragment menuItemFields on MenuItem {
     title
     path
     name
+    url(type: absolute)
     id
     type
 }
