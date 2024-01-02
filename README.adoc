@@ -1,7 +1,7 @@
 = Enonic XP - Menu App
 
 This application is an extension of the https://developer.enonic.com/docs/guillotine/stable/api[Guillotine GraphQL API].
-If the Guillotine application is installed on your XP instance, then after installing this application, a `menu` field will be added to the https://developer.enonic.com/docs/guillotine/stable/api#headlesscms[HeadlessCms] type.
+If the Guillotine application is installed on your XP instance, then after installing this application, a `getMenu(contentKey: String!): Menu` field will be added to the https://developer.enonic.com/docs/guillotine/stable/api#headlesscms[HeadlessCms] type.
 
 == API
 === MenuItem
@@ -43,7 +43,7 @@ If the Guillotine application is installed on your XP instance, then after insta
 |===
 |Name(Arguments):Type | Description
 
-|menu(contentKey: String!, ariaLabel: String): [<<MenuItem>>]
+|menuItems: [<<MenuItem>>]
 |Returns a menu for the content with the given key.
 |===
 
@@ -73,8 +73,7 @@ fragment menuFields on MenuItem {
 
 query {
     guillotine(project: "hmdb", branch: "draft") {
-        menu(contentKey: "/hmdb/movies")  {
-            ariaLabel
+        getMenu(contentKey: "/hmdb/movies")  {
             menuItems {
                 ...menuFields
             }
