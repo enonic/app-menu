@@ -9,9 +9,6 @@ exports.extensions = function (graphQL) {
                     menuItems: {
                         type: graphQL.list(graphQL.reference('MenuItem')),
                     },
-                    ariaLabel: {
-                        type: graphQL.GraphQLString,
-                    }
                 }
             },
             MenuItem: {
@@ -50,11 +47,10 @@ exports.extensions = function (graphQL) {
         creationCallbacks: {
             HeadlessCms: function (params) {
                 params.addFields({
-                    menu: {
+                    getMenu: {
                         type: graphQL.reference('Menu'),
                         args: {
                             contentKey: graphQL.nonNull(graphQL.GraphQLString),
-                            ariaLabel: graphQL.GraphQLString,
                         }
                     },
                 });
@@ -62,11 +58,10 @@ exports.extensions = function (graphQL) {
         },
         resolvers: {
             HeadlessCms: {
-                menu: resolverLib.HeadlessCms_menu_Resolver(graphQL),
+                getMenu: resolverLib.HeadlessCms_getMenu_Resolver(graphQL),
             },
             Menu: {
                 menuItems: resolverLib.Menu_menuItems_Resolver,
-                ariaLabel: resolverLib.Menu_ariaLabel_Resolver,
             },
             MenuItem: {
                 content: resolverLib.MenuItem_content_Resolver,

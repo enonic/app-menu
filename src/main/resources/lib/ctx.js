@@ -12,8 +12,3 @@ exports.executeInContext = function (env, callbackFn) {
         branch: env.localContext && env.localContext.__targetBranch || defaultBranch,
     }, callbackFn);
 };
-
-exports.get = function () {
-    return contextLib.get();
-};
-
