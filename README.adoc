@@ -1,7 +1,15 @@
 = Enonic XP - Menu App
 
-This application is an extension of the https://developer.enonic.com/docs/guillotine/stable/api[Guillotine GraphQL API].
-If the Guillotine application is installed on your XP instance, then after installing this application, a `getMenu(contentKey: String!): Menu` field will be added to the https://developer.enonic.com/docs/guillotine/stable/api#headlesscms[HeadlessCms] type.
+This application extends the https://developer.enonic.com/docs/guillotine/stable/api#headlesscms[HeadlessCms type from Guillotine GraphQL API] with a `menu: Menu` field.
+
+The `menu` field will be added after installing this app and can be used to retrieve a menu for a specific site.
+
+```
+type HeadlessCms {
+    ...
+    menu: Menu
+}
+```
 
 == API
 === MenuItem
@@ -26,9 +34,6 @@ If the Guillotine application is installed on your XP instance, then after insta
 |type: String
 |Type of the content.
 
-|url(type: https://developer.enonic.com/docs/guillotine/stable/api#urltype[UrlType]): String
-|Url of the content.
-
 |content: https://developer.enonic.com/docs/guillotine/stable/api#content[Content]
 |Relevant content.
 
@@ -44,7 +49,7 @@ If the Guillotine application is installed on your XP instance, then after insta
 |Name(Arguments):Type | Description
 
 |menuItems: [<<MenuItem>>]
-|Returns a menu for the content with the given key.
+|Returns a menu for the specific site.
 |===
 
 == Usage
@@ -56,7 +61,6 @@ fragment menuItemFields on MenuItem {
     title
     path
     name
-    url(type: absolute)
     id
     type
 }
@@ -72,15 +76,16 @@ fragment menuFields on MenuItem {
 }
 
 query {
-    guillotine(project: "hmdb", branch: "draft") {
-        getMenu(contentKey: "/hmdb/movies")  {
-            menuItems {
-                ...menuFields
-            }
-        }
+    guillotine {
+       menu  {
+           menuItems {
+             ...menuFields
+          }
+       }
     }
 }
 ```
 
-In this example, we are querying the menu for the content with the key `/hmdb/movies`.
+If the `X-Guillotine-SiteKey` header is set, the menu will be retrieved for the given site. Otherwise, the menu will be retrieved for project.
+
 To retrieve a specific number of submenus, you can use the `children` field. In our case three levels of submenus are retrieved.

@@ -26,12 +26,6 @@ exports.extensions = function (graphQL) {
                     name: {
                         type: graphQL.GraphQLString,
                     },
-                    url: {
-                        type: graphQL.GraphQLString,
-                        args: {
-                            type: graphQL.reference('UrlType'),
-                        }
-                    },
                     type: {
                         type: graphQL.GraphQLString,
                     },
@@ -47,18 +41,15 @@ exports.extensions = function (graphQL) {
         creationCallbacks: {
             HeadlessCms: function (params) {
                 params.addFields({
-                    getMenu: {
+                    menu: {
                         type: graphQL.reference('Menu'),
-                        args: {
-                            contentKey: graphQL.nonNull(graphQL.GraphQLString),
-                        }
                     },
                 });
             },
         },
         resolvers: {
             HeadlessCms: {
-                getMenu: resolverLib.HeadlessCms_getMenu_Resolver(graphQL),
+                menu: resolverLib.HeadlessCms_menu_Resolver(graphQL),
             },
             Menu: {
                 menuItems: resolverLib.Menu_menuItems_Resolver,
@@ -66,7 +57,6 @@ exports.extensions = function (graphQL) {
             MenuItem: {
                 content: resolverLib.MenuItem_content_Resolver,
                 children: resolverLib.MenuItem_getChildren_Resolver,
-                url: resolverLib.MenuItem_url_Resolver,
             },
         },
     }
