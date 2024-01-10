@@ -10,24 +10,31 @@ exports.getChildrenMenuItems = getChildrenMenuItems;
 
 function getRootMenuTree(env) {
     return ctxLib.executeInContext(env, function () {
-        const site = contentLib.getSite({
-            key: env.localContext.currentContentKey,
-        });
-        if (!site) {
-            return [];
+        if (env.localContext.siteKey === '/') {
+            const project = contentLib.get({
+                key: '/'
+            });
+
+            return getChildMenuItems({
+                parentPath: project._path,
+                parentChildOrder: project.childOrder
+            });
         } else {
-            const menuItems = [];
+            const site = contentLib.getSite({
+                key: env.localContext.siteKey,
+            });
+
+            if (!site) {
+                return [];
+            }
 
             if (site.type === 'portal:site' && isMenuItem(site)) {
-                menuItems.push(createMenuItem(site));
-
-                return menuItems;
+                return [createMenuItem(site)];
             } else {
-                const childrenMenuItems = getChildMenuItems({
+                return getChildMenuItems({
                     parentPath: site._path,
                     parentChildOrder: site.childOrder
                 });
-                return menuItems.concat(childrenMenuItems);
             }
         }
     });
@@ -57,7 +64,7 @@ function getChildMenuItems(params) {
                     {
                         term: {
                             field: '_parentPath',
-                            value: `/content${params.parentPath}`,
+                            value: `/content${params.parentPath === '/' ? '' : params.parentPath}`,
                         },
                     },
                     {
