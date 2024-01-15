@@ -94,7 +94,6 @@ function createMenuItem(content) {
         title: menuItem.menuName || content.displayName,
         path: content._path,
         name: content._name,
-        type: content.type,
         content: content,
     };
 }
