@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x-data>
-  <display-name>Menu settings</display-name>
+  <display-name>Menu</display-name>
   <form>
     <input type="CheckBox" name="menuItem">
       <label>Show in menu?</label>

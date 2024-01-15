@@ -6,7 +6,7 @@ exports.extensions = function (graphQL) {
             Menu: {
                 description: 'Menu',
                 fields: {
-                    menuItems: {
+                    items: {
                         type: graphQL.list(graphQL.reference('MenuItem')),
                     },
                 }
@@ -14,9 +14,6 @@ exports.extensions = function (graphQL) {
             MenuItem: {
                 description: 'Menu Item',
                 fields: {
-                    id: {
-                        type: graphQL.GraphQLString,
-                    },
                     title: {
                         type: graphQL.GraphQLString,
                     },
@@ -26,10 +23,7 @@ exports.extensions = function (graphQL) {
                     name: {
                         type: graphQL.GraphQLString,
                     },
-                    type: {
-                        type: graphQL.GraphQLString,
-                    },
-                    children: {
+                    items: {
                         type: graphQL.list(graphQL.reference('MenuItem')),
                     },
                     content: {
@@ -52,11 +46,11 @@ exports.extensions = function (graphQL) {
                 menu: resolverLib.HeadlessCms_menu_Resolver(graphQL),
             },
             Menu: {
-                menuItems: resolverLib.Menu_menuItems_Resolver,
+                items: resolverLib.Menu_items_Resolver,
             },
             MenuItem: {
                 content: resolverLib.MenuItem_content_Resolver,
-                children: resolverLib.MenuItem_getChildren_Resolver,
+                items: resolverLib.MenuItem_items_Resolver,
             },
         },
     }

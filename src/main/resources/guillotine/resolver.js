@@ -14,11 +14,11 @@ exports.HeadlessCms_menu_Resolver = function (graphQL) {
     }
 };
 
-exports.Menu_menuItems_Resolver = function (env) {
+exports.Menu_items_Resolver = function (env) {
     return menuLib.getMenuTree(env);
 };
 
-exports.MenuItem_getChildren_Resolver = function (env) {
+exports.MenuItem_items_Resolver = function (env) {
     return menuLib.getChildrenMenuItems(env, env.source.path);
 };
 
