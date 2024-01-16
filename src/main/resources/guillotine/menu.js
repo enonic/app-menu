@@ -11,33 +11,43 @@ exports.getChildrenMenuItems = getChildrenMenuItems;
 function getRootMenuTree(env) {
     return ctxLib.executeInContext(env, function () {
         if (env.localContext.siteKey === '/') {
-            const project = contentLib.get({
-                key: '/'
-            });
-
-            return getChildMenuItems({
-                parentPath: project._path,
-                parentChildOrder: project.childOrder
-            });
+            return getMenuTreeForProject();
         } else {
-            const site = contentLib.getSite({
-                key: env.localContext.siteKey,
-            });
-
-            if (!site) {
-                return [];
-            }
-
-            if (site.type === 'portal:site' && isMenuItem(site)) {
-                return [createMenuItem(site)];
-            } else {
-                return getChildMenuItems({
-                    parentPath: site._path,
-                    parentChildOrder: site.childOrder
-                });
-            }
+            return getMenuTreeForSite(env);
         }
     });
+}
+
+function getMenuTreeForProject() {
+    const project = contentLib.get({
+        key: '/'
+    });
+
+    if (isMenuAppNotInstalled(project)) {
+        return [];
+    } else {
+        return getChildMenuItems({
+            parentPath: project._path,
+            parentChildOrder: project.childOrder
+        });
+    }
+}
+
+function getMenuTreeForSite(env) {
+    const site = contentLib.getSite({
+        key: env.localContext.siteKey,
+    });
+
+    if (!site || isMenuAppNotInstalled(site)) {
+        return [];
+    } else if (site.type === 'portal:site' && isMenuItem(site)) {
+        return [createMenuItem(site)];
+    } else {
+        return getChildMenuItems({
+            parentPath: site._path,
+            parentChildOrder: site.childOrder
+        });
+    }
 }
 
 function getChildrenMenuItems(env, parentPath) {
@@ -110,4 +120,13 @@ function isMenuItem(content) {
         return menuItemData.menuItem;
     }
     return false;
+}
+
+function forceArray(value) {
+    return Array.isArray(value) ? value : [value];
+}
+
+function isMenuAppNotInstalled(holder) {
+    return !holder.data.siteConfig ||
+           forceArray(holder.data.siteConfig).filter(cfg => cfg && cfg.applicationKey === 'com.enonic.app.menu').length === 0;
 }
