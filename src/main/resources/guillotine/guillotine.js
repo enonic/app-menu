@@ -49,6 +49,7 @@ exports.extensions = function (graphQL) {
                 items: resolverLib.Menu_items_Resolver,
             },
             MenuItem: {
+                path: resolverLib.MenuItem_path_Resolver,
                 content: resolverLib.MenuItem_content_Resolver,
                 items: resolverLib.MenuItem_items_Resolver,
             },

@@ -6,9 +6,9 @@ exports.executeInContext = function (env, callbackFn) {
     const defaultBranch = oldContext.branch;
 
     return contextLib.run({
-        repository: env.localContext && env.localContext.__targetProject
-                    ? `com.enonic.cms.${env.localContext.__targetProject}`
+        repository: env.localContext && env.localContext.project
+                    ? `com.enonic.cms.${env.localContext.project}`
                     : defaultRepository,
-        branch: env.localContext && env.localContext.__targetBranch || defaultBranch,
+        branch: env.localContext && env.localContext.branch || defaultBranch,
     }, callbackFn);
 };

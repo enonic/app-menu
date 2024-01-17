@@ -20,24 +20,19 @@ type HeadlessCms {
 |Name(Arguments):Type | Description
 
 |id: String
-|ID of the content.
-
 |title: String
 |Title of the menu item. If the menu has a `menuName` in the config, this will be used. Otherwise, the `displayName` from the content will be used.
 
 |path: String
-|Path of the content.
+|Menu relative path for specific content.
 
 |name: String
 |Name of the content.
 
-|type: String
-|Type of the content.
-
 |content: https://developer.enonic.com/docs/guillotine/stable/api#content[Content]
 |Relevant content.
 
-|children: [<<MenuItem>>]
+|items: [<<MenuItem>>]
 |Submenu items.
 |===
 
@@ -48,7 +43,7 @@ type HeadlessCms {
 |===
 |Name(Arguments):Type | Description
 
-|menuItems: [<<MenuItem>>]
+|items: [<<MenuItem>>]
 |Returns a menu for the specific site.
 |===
 
@@ -61,15 +56,16 @@ fragment menuItemFields on MenuItem {
     title
     path
     name
-    id
-    type
+    content {
+        _id
+    }
 }
 
 fragment menuFields on MenuItem {
     ...menuItemFields
-    children {
+    items {
         ...menuItemFields
-        children {
+        items {
             ...menuItemFields
         }
     }
@@ -78,7 +74,7 @@ fragment menuFields on MenuItem {
 query {
     guillotine {
        menu  {
-           menuItems {
+          items {
              ...menuFields
           }
        }
@@ -88,4 +84,4 @@ query {
 
 If the `X-Guillotine-SiteKey` header is set, the menu will be retrieved for the given site. Otherwise, the menu will be retrieved for project.
 
-To retrieve a specific number of submenus, you can use the `children` field. In our case three levels of submenus are retrieved.
+To retrieve a specific number of submenus, you can use the `items` field. In our case three levels of submenus are retrieved.
