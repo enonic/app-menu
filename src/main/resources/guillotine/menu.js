@@ -10,44 +10,17 @@ exports.getChildrenMenuItems = getChildrenMenuItems;
 
 function getRootMenuTree(env) {
     return ctxLib.executeInContext(env, function () {
-        if (env.localContext.siteKey === '/') {
-            return getMenuTreeForProject();
+        const menuSource = JSON.parse(env.localContext._menuAppSource);
+
+        if (menuSource.type === 'portal:site' && isMenuItem(menuSource)) {
+            return [createMenuItem(menuSource)];
         } else {
-            return getMenuTreeForSite(env);
+            return getChildMenuItems({
+                parentPath: menuSource._path,
+                parentChildOrder: menuSource.childOrder
+            });
         }
     });
-}
-
-function getMenuTreeForProject() {
-    const project = contentLib.get({
-        key: '/'
-    });
-
-    if (isMenuAppNotInstalled(project)) {
-        return [];
-    } else {
-        return getChildMenuItems({
-            parentPath: project._path,
-            parentChildOrder: project.childOrder
-        });
-    }
-}
-
-function getMenuTreeForSite(env) {
-    const site = contentLib.getSite({
-        key: env.localContext.siteKey,
-    });
-
-    if (!site || isMenuAppNotInstalled(site)) {
-        return [];
-    } else if (site.type === 'portal:site' && isMenuItem(site)) {
-        return [createMenuItem(site)];
-    } else {
-        return getChildMenuItems({
-            parentPath: site._path,
-            parentChildOrder: site.childOrder
-        });
-    }
 }
 
 function getChildrenMenuItems(env, parentPath) {
@@ -104,7 +77,6 @@ function createMenuItem(content) {
         title: menuItem.menuName || content.displayName,
         path: content._path,
         name: content._name,
-        content: content,
     };
 }
 
@@ -120,13 +92,4 @@ function isMenuItem(content) {
         return menuItemData.menuItem;
     }
     return false;
-}
-
-function forceArray(value) {
-    return Array.isArray(value) ? value : [value];
-}
-
-function isMenuAppNotInstalled(holder) {
-    return !holder.data.siteConfig ||
-           forceArray(holder.data.siteConfig).filter(cfg => cfg && cfg.applicationKey === 'com.enonic.app.menu').length === 0;
 }
