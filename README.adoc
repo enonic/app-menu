@@ -90,7 +90,6 @@ To retrieve a specific number of submenus, you can use the `items` field. In our
 To migrate from Menu Lib to Menu App, you can follow these steps:
 
 1. Install the Menu App. This app includes x-data called `menu-item`.
-2. In Content Studio, edit the content you want to mark as a menu item.
-3. Unmark the `menu-item` x-data provided by Menu Lib.
+2. In Content Studio edit all content items which were marked as menu items for the Menu Lib: uncheck the "Show in menu" checkbox in the `Menu Settings` x-data provided by the Menu Lib and check off the checkbox in the "Menu" x-data provided by the Menu App.
 4. Rewrite your menu code to use the new GraphQL API. See the example of usage above.
 5. Remove Menu Lib from your project.
