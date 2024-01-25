@@ -19,7 +19,6 @@ type HeadlessCms {
 |===
 |Name(Arguments):Type | Description
 
-|id: String
 |title: String
 |Title of the menu item. If the menu has a `menuName` in the config, this will be used. Otherwise, the `displayName` from the content will be used.
 
@@ -85,3 +84,13 @@ query {
 If the `X-Guillotine-SiteKey` header is set, the menu will be retrieved for the given site. Otherwise, the menu will be retrieved for project.
 
 To retrieve a specific number of submenus, you can use the `items` field. In our case three levels of submenus are retrieved.
+
+== Migration from Menu Lib
+
+To migrate from Menu Lib to Menu App, you can follow these steps:
+
+1. Install the Menu App. This app includes x-data called `menu-item`.
+2. In Content Studio, edit the content you want to mark as a menu item.
+3. Unmark the `menu-item` x-data provided by Menu Lib.
+4. Rewrite your menu code to use the new GraphQL API. See the example of usage above.
+5. Remove Menu Lib from your project.
