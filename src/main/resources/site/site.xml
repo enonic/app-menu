@@ -2,5 +2,6 @@
 <site>
   <display-name>Menu App</display-name>
   <form/>
-  <x-data name="menu-item"/>
+  <x-data name="menu-item" optional="true" allowContentTypes="^(?!media:.*|portal:site|portal:template-folder|portal:page-template|portal:fragment).*$"/>
 </site>
+
