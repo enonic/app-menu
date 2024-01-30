@@ -48,7 +48,11 @@ type HeadlessCms {
 
 == Usage
 
-To start using this in Guillotine, simply add the menu field with the necessary sub-fields to your GraphQL query:
+First, you need to mark content items as menu items in Content Studio. To do this, open content editor for a content item, expand the "Menu" x-data and check-off the checkbox called "Show in menu", then save the content. This will mark the content item as a menu item.
+
+NB! "Menu" x-data will not be shown for the following content types: site, fragment, page template folder, page template and all media content.
+
+To fetch menu items in Guillotine, simply add the menu field with the necessary sub-fields to your GraphQL query:
 
 ```graphql
 fragment menuItemFields on MenuItem {
