@@ -1,0 +1,6 @@
+kind: "CMS"
+mixins:
+  - name: "com.enonic.app.menu:menu-item"
+    allowContentTypes: "^(?!media:.*|portal:site|portal:template-folder|portal:page-template|portal:fragment).*$"
+    optional: true
+form: []
