@@ -12,6 +12,26 @@ type HeadlessCms {
 ```
 
 == API
+=== Breadcrumb
+
+==== Fields
+
+|===
+|Name(Arguments):Type | Description
+
+|title: String
+|Title of the breadcrumb item. If the menu has a `menuName` in the config, this will be used. Otherwise, the `displayName` from the content will be used.
+
+|path: String
+|Menu relative path for specific content.
+
+|name: String
+|Name of the content.
+
+|content: https://developer.enonic.com/docs/guillotine/stable/api#content[Content]
+|Relevant content.
+|===
+
 === MenuItem
 
 ==== Fields
@@ -44,6 +64,9 @@ type HeadlessCms {
 
 |items: [<<MenuItem>>]
 |Returns a menu for the specific site.
+
+|breadcrumbs(path: String): [<<Breadcrumb>>]
+|Returns breadcrumb items from the site root down to the content at the given path. Only content items marked as menu items ("Show in menu") are included. The `path` can be either a site-relative path (e.g. `/section/page`) or an absolute content path.
 |===
 
 == Usage
@@ -88,6 +111,25 @@ query {
 If the `X-Guillotine-SiteKey` header is set, the menu will be retrieved for the given site. Otherwise, the menu will be retrieved for project.
 
 To retrieve a specific number of submenus, you can use the `items` field. In our case three levels of submenus are retrieved.
+
+To fetch breadcrumbs for a specific content path:
+
+```graphql
+query {
+    guillotine {
+        menu {
+            breadcrumbs(path: "/section/page") {
+                title
+                path
+                name
+                content {
+                    _id
+                }
+            }
+        }
+    }
+}
+```
 
 == Migration from Menu Lib
 

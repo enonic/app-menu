@@ -48,6 +48,23 @@ exports.MenuItem_path_Resolver = function (env) {
     return basePath === '/' ? env.source.path : env.source.path.replace(basePath, '');
 };
 
+exports.Menu_breadcrumbs_Resolver = function (env) {
+    return menuLib.getBreadcrumbs(env, env.args.path);
+};
+
+exports.Breadcrumb_path_Resolver = function (env) {
+    const basePath = env.localContext._menuAppBasePath;
+    return basePath === '/' ? env.source.path : env.source.path.replace(basePath, '');
+};
+
+exports.Breadcrumb_content_Resolver = function (env) {
+    return ctxLib.executeInContext(env, function () {
+        return contentLib.get({
+            key: env.source.id,
+        });
+    });
+};
+
 function resolveMenuSource(env) {
     return ctxLib.executeInContext(env, function () {
         const key = env.localContext.siteKey || '/';
