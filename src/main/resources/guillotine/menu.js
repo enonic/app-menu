@@ -8,6 +8,8 @@ exports.getMenuTree = getRootMenuTree;
 
 exports.getChildrenMenuItems = getChildrenMenuItems;
 
+exports.getBreadcrumbs = getBreadcrumbs;
+
 function getRootMenuTree(env) {
     return ctxLib.executeInContext(env, function () {
         const menuSource = JSON.parse(env.localContext._menuAppSource);
@@ -92,4 +94,40 @@ function isMenuItem(content) {
         return menuItemData.menuItem;
     }
     return false;
+}
+
+function getBreadcrumbs(env, contentPath) {
+    return ctxLib.executeInContext(env, function () {
+        const menuSource = JSON.parse(env.localContext._menuAppSource);
+        const basePath = menuSource._path;
+
+        const fullPath = (basePath !== '/' && !contentPath.startsWith(basePath))
+            ? basePath + contentPath
+            : contentPath;
+
+        const ancestorPaths = getAncestorPaths(fullPath, basePath);
+
+        const breadcrumbs = [];
+        for (const ancestorPath of ancestorPaths) {
+            const content = contentLib.get({ key: ancestorPath });
+            if (content && isMenuItem(content)) {
+                breadcrumbs.push(createMenuItem(content));
+            }
+        }
+
+        return breadcrumbs;
+    });
+}
+
+function getAncestorPaths(fullPath, basePath) {
+    const paths = [];
+    const parts = fullPath.split('/').filter(Boolean);
+    const baseParts = basePath === '/' ? [] : basePath.split('/').filter(Boolean);
+
+    for (let i = baseParts.length; i <= parts.length; i++) {
+        const path = i === 0 ? '/' : '/' + parts.slice(0, i).join('/');
+        paths.push(path);
+    }
+
+    return paths;
 }
