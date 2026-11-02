@@ -67,7 +67,9 @@ exports.Breadcrumb_content_Resolver = function (env) {
 
 function resolveMenuSource(env) {
     return ctxLib.executeInContext(env, function () {
-        const key = env.localContext.siteKey || '/';
+        const key = env.localContext.scopeKey != null
+            ? env.localContext.scopeKey
+            : env.localContext.siteKey || '/';
 
         if (key === undefined) {
             return null;
