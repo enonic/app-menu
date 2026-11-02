@@ -98,7 +98,7 @@ fragment menuFields on MenuItem {
 }
 
 query {
-    guillotine {
+    guillotine(project: "myproject", branch: "master", scopeKey: "/my-site") {
        menu  {
           items {
              ...menuFields
@@ -108,7 +108,9 @@ query {
 }
 ```
 
-If the `X-Guillotine-SiteKey` header is set, the menu will be retrieved for the given site. Otherwise, the menu will be retrieved for project.
+In Guillotine 9, use the `project`, `branch`, and optional `scopeKey` arguments shown above. `scopeKey` selects the site or other content scope; without it, the menu is retrieved for the project.
+
+The app remains compatible with Guillotine 8. For Guillotine 8, omit the arguments from `guillotine` and set the `X-Guillotine-SiteKey` request header to select a site. Without that header, the menu is retrieved for the project.
 
 To retrieve a specific number of submenus, you can use the `items` field. In our case three levels of submenus are retrieved.
 
@@ -116,7 +118,7 @@ To fetch breadcrumbs for a specific content path:
 
 ```graphql
 query {
-    guillotine {
+    guillotine(project: "myproject", branch: "master", scopeKey: "/my-site") {
         menu {
             breadcrumbs(path: "/section/page") {
                 title
